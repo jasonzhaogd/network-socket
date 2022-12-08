@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "unistd.h": "c",
+        "inet.h": "c",
+        "socket_type.h": "c",
+        "socket.h": "c",
+        "stdio.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c",
+        "stddef.h": "c",
+        "error.h": "c",
+        "wait.h": "c"
+    }
+}
