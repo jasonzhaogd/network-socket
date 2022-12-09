@@ -1,6 +1,8 @@
 /**
  * level-triggered: 条件触发，只要有数据，服务器端不断地从 epoll_wait 中苏醒
  * edge-triggered : 边缘触发，服务器端只从 epoll_wait 中苏醒过一次
+ * 
+ * 一般我们认为，边缘触发的效率比条件触发的效率要高，这一点也是 epoll 的杀手锏之一。
  */
 
 #include <stdio.h>
