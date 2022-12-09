@@ -21,8 +21,6 @@
 #define BUF_SIZE 100
 #define EPOLL_SIZE 50
 
-void read_child_proc(int sig);
-
 int main(int argc, char *argv[])
 {
     int serv_sock, clnt_sock;
