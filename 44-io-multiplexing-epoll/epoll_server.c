@@ -1,5 +1,10 @@
 /**
- * epoll 模式实现的 echo 服务端， epoll 模式的优点：
+ * epoll 模式实现的 echo 服务端， 主要是3个函数：
+ * - epoll_create
+ * - epoll_ctl
+ * - epoll_wait
+ * 
+ * epoll 模式的优点：
  * - epoll_wait 只返回有变化的fd集合，无需遍历所有fd
  * - 调用 epoll_wait 函数时，无需每次给 OS 传递监视对象集合，而是在需要时针对每个监视对象单独操作
  */
@@ -56,7 +61,13 @@ int main(int argc, char *argv[])
     if (listen(serv_sock, 5) == -1)
         error_handling("listen error");
 
-    // epoll 初始化
+    
+    /**
+     * epoll 初始化，创建了一个 epoll 实例，原型是：
+     * int epoll_create(int size);
+     * - 一开始的 epoll_create 实现中，是用来告知内核期望监控的文件描述字大小，然后内核使用这部分的信息来初始化内核数据结构，
+     *   在新的实现中，这个参数不再被需要，因为内核可以动态分配需要的内核数据结构。我们只需要注意，每次将 size 设置成一个大于 0 的整数就可以了。
+    */
     epfd = epoll_create(EPOLL_SIZE);
     ep_events = malloc(sizeof(struct epoll_event) * EPOLL_SIZE);
     // 把 serv_sock 放入监视列表
@@ -129,7 +140,15 @@ int main(int argc, char *argv[])
     close(serv_sock);
     // 记得关闭 epoll fd
     close(epfd);
+    // 记得释放内存
+    free(ep_events);
     return 0;
 }
 
 // 客户端可以用 05/echo_client.c
+
+/**
+ * epoll 机制是 Linux 特有的
+ * 早在 Linux 实现 epoll 之前，Windows 系统就已经在 1994 年引入了 IOCP，这是一个异步 I/O 模型，用来支持高并发的网络 I/O，
+ * 而著名的 FreeBSD 在 2000 年引入了 Kqueue，也是一个 I/O 事件分发框架。
+*/
